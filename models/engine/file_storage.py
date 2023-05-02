@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains the FileStorage class
+Contains the FileStorage class to store in a file
 """
 
 import json
@@ -11,6 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import models
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -55,7 +56,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except FileNotFoundError:
+        except:
             pass
 
     def delete(self, obj=None):
@@ -69,17 +70,14 @@ class FileStorage:
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
 
-
-def get(self, cls, id):
-    """ Get object by ID """
-    if cls and id:
-        for key, value in models.storage.all(cls).items():
-            if id == value.id:
-            return value
+    def get(self, cls, id):
+        """ Get object by ID """
+        if cls and id:
+            for key, value in models.storage.all(cls).items():
+                if id == value.id:
+                    return value
         return None
 
-
-def count(self, cls=None):
-    if cls:
+    def count(self, cls=None):
         """ Return length of the class or classes """
         return len(models.storage.all(cls))
